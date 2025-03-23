@@ -1,4 +1,12 @@
 export default (req, res) => {
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000')
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+
+  if (req.method === 'OPTIONS') {
+    return res.status(204).end()
+  }
+
   const user = req.auth
 
   if (!user) {
