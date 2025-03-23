@@ -19,6 +19,7 @@ export default (req, res) => {
   try {
     const decoded = jwt.decode(token) // attention : decode ≠ verify
     const user = decoded
+    console.log(user)
 
     res.status(200).send(`Hello ${user['sub'] || 'anonymous'}!`)
   } catch (err) {
