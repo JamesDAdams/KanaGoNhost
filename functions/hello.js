@@ -8,6 +8,7 @@ export default (req, res) => {
   }
 
   const user = req.auth
+  console.log(user)
 
   if (!user) {
     return res.status(401).json({ error: 'Unauthorized' })
