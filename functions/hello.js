@@ -1,6 +1,6 @@
 export default (req, res) => {
   console.log('Headers:', req.headers)
-  console.log('Auth:', req.auth)
+  console.log('Auth:', req.auth.getAccessToken())
   
   res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000')
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization')
