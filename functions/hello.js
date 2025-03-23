@@ -1,7 +1,6 @@
+import jwt from 'jsonwebtoken'
+
 export default (req, res) => {
-  console.log('Headers:', req.headers)
-  console.log('Auth:', req.auth.getAccessToken())
-  
   res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000')
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization')
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
@@ -10,12 +9,20 @@ export default (req, res) => {
     return res.status(204).end()
   }
 
-  const user = req.auth
-  console.log(user)
+  const authHeader = req.headers.authorization
+  const token = authHeader?.split(' ')[1]
 
-  if (!user) {
-    return res.status(401).json({ error: 'Unauthorized' })
+  if (!token) {
+    return res.status(401).json({ error: 'No token' })
   }
 
-  res.status(200).send(`Hello ${user.displayName || user.id}!`)
+  try {
+    const decoded = jwt.decode(token) // attention : decode ≠ verify
+    const user = decoded
+
+    res.status(200).send(`Hello ${user['sub'] || 'anonymous'}!`)
+  } catch (err) {
+    console.error('JWT Decode Error:', err)
+    return res.status(401).json({ error: 'Invalid token' })
+  }
 }
